@@ -48,7 +48,7 @@ resource "azurerm_linux_virtual_machine" "jumpbox" {
   name                            = "${var.prefix}-jumpbox"
   location                        = var.location
   resource_group_name             = var.resource_group_name
-  size                            = "Standard_B2s" # Cost-effective instance size for jumpbox operations
+  size                            = "Standard_D2als_v6" # Cost-effective instance size for jumpbox operations
   admin_username                  = var.admin_username
   admin_password                  = "Muhammed@2003"
   disable_password_authentication = false
