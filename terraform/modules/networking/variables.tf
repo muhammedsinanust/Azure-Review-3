@@ -73,5 +73,5 @@ variable "aks_api_subnet_cidr" {
 variable "public_dns_zone_name" {
   description = "Public DNS zone name for external-facing services."
   type        = string
-  default     = "training.contoso.com"
+  default     = "training.sneakertail.online"
 }

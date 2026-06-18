@@ -91,7 +91,7 @@ variable "aks_api_subnet_cidr" {
 variable "domain_name" {
   description = "Public domain name for the training portal DNS zone."
   type        = string
-  default     = "training.contoso.com"
+  default     = "training.sneakertail.online"
 }
 
 # -----------------------------------------------------------------------------
