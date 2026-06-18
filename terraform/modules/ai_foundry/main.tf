@@ -26,7 +26,7 @@
 
 resource "azurerm_cognitive_account" "main" {
   name                  = "${var.prefix}-ai-services"
-  location              = var.location
+  location              = "swedencentral"
   resource_group_name   = var.resource_group_name
   kind                  = "AIServices"
   sku_name              = "S0"

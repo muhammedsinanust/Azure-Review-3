@@ -16,13 +16,13 @@ variable "resource_group_name" {
 }
 
 variable "location" {
-  description = "Azure region for deployment."
+  description = "Azure region — globally forced to Central India."
   type        = string
   default     = "centralindia"
 
   validation {
-    condition     = contains(["centralindia", "eastus", "eastus2", "swedencentral"], var.location)
-    error_message = "All resources must be deployed to centralindia, eastus, eastus2, or swedencentral."
+    condition     = var.location == "centralindia"
+    error_message = "All resources must be deployed to the centralindia region."
   }
 }
 
