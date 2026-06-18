@@ -78,7 +78,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     os_disk_size_gb      = 128
     os_disk_type         = "Managed"
     type                 = "VirtualMachineScaleSets"
-    zones                = ["1", "2", "3"]
+    zones                = ["1", "2"]
 
     # Only schedule system-critical pods on this pool.
     only_critical_addons_enabled = true
@@ -136,7 +136,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user" {
   os_disk_size_gb       = 128
   os_disk_type          = "Managed"
   os_type               = "Linux"
-  zones                 = ["1", "2", "3"]
+  zones                 = ["1", "2"]
   mode                  = "User"
   tags                  = var.tags
 
