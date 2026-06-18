@@ -36,8 +36,8 @@ spec:
   source:
     # IMPORTANT: Update this to your actual Git repository URL
     repoURL: https://github.com/sinans-azure/CTMP3.git
-    targetRevision: HEAD
-    path: gitops/apps/
+    targetRevision: main
+    path: gitops/apps
 
   destination:
     # In-cluster — ArgoCD runs inside the same AKS cluster
@@ -46,8 +46,8 @@ spec:
 
   syncPolicy:
     automated:
-      prune: true        # Remove apps when their YAML is deleted from Git
-      selfHeal: true     # Re-sync if someone manually modifies cluster state
+      prune: true # Remove apps when their YAML is deleted from Git
+      selfHeal: true # Re-sync if someone manually modifies cluster state
     syncOptions:
       - CreateNamespace=true
       - PrunePropagationPolicy=foreground
