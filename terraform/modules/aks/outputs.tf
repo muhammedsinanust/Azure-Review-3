@@ -61,8 +61,8 @@ output "acr_name" {
 }
 
 output "aks_identity_principal_id" {
-  description = "Principal ID of the AKS cluster system-assigned identity."
-  value       = azurerm_kubernetes_cluster.main.identity[0].principal_id
+  description = "Principal ID of the AKS cluster user-assigned identity."
+  value       = azurerm_user_assigned_identity.aks.principal_id
 }
 
 output "aks_node_resource_group" {

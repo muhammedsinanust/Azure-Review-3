@@ -14,10 +14,32 @@
 # =============================================================================
 
 # =============================================================================
+# AKS Managed Identity & Permissions
+# =============================================================================
+# A User-Assigned Managed Identity is required for private AKS cluster creation
+# when integrating with a custom Private DNS Zone, so permissions can be assigned
+# before the cluster attempts registration.
+# =============================================================================
+
+resource "azurerm_user_assigned_identity" "aks" {
+  name                = "${var.prefix}-aks-identity"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  tags                = var.tags
+}
+
+resource "azurerm_role_assignment" "aks_dns_contributor_pre" {
+  scope                = var.aks_private_dns_zone_id
+  role_definition_name = "Private DNS Zone Contributor"
+  principal_id         = azurerm_user_assigned_identity.aks.principal_id
+}
+
+# =============================================================================
 # AKS Cluster
 # =============================================================================
 
 resource "azurerm_kubernetes_cluster" "main" {
+  depends_on = [azurerm_role_assignment.aks_dns_contributor_pre]
   name                = "${var.prefix}-aks"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -35,9 +57,11 @@ resource "azurerm_kubernetes_cluster" "main" {
     subnet_id                           = var.aks_api_subnet_id
   }
 
-  # --- Cluster identity: SystemAssigned managed identity ---
+  # --- Cluster identity: UserAssigned managed identity ---
+  # Required when deploying AKS with custom private DNS zone.
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.aks.id]
   }
 
   # --- Default (System) node pool ---
@@ -240,13 +264,13 @@ resource "azurerm_role_assignment" "agic_appgw_contributor" {
 resource "azurerm_role_assignment" "aks_network_contributor" {
   scope                = var.aks_subnet_id
   role_definition_name = "Network Contributor"
-  principal_id         = azurerm_kubernetes_cluster.main.identity[0].principal_id
+  principal_id         = azurerm_user_assigned_identity.aks.principal_id
 }
 
 resource "azurerm_role_assignment" "aks_api_subnet_contributor" {
   scope                = var.aks_api_subnet_id
   role_definition_name = "Network Contributor"
-  principal_id         = azurerm_kubernetes_cluster.main.identity[0].principal_id
+  principal_id         = azurerm_user_assigned_identity.aks.principal_id
 }
 
 # =============================================================================
@@ -258,5 +282,5 @@ resource "azurerm_role_assignment" "aks_api_subnet_contributor" {
 resource "azurerm_role_assignment" "aks_dns_contributor" {
   scope                = var.aks_private_dns_zone_id
   role_definition_name = "Private DNS Zone Contributor"
-  principal_id         = azurerm_kubernetes_cluster.main.identity[0].principal_id
+  principal_id         = azurerm_user_assigned_identity.aks.principal_id
 }
