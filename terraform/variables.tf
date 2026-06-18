@@ -16,13 +16,13 @@ variable "resource_group_name" {
 }
 
 variable "location" {
-  description = "Azure region — globally forced to Central India."
+  description = "Azure region for deployment."
   type        = string
   default     = "centralindia"
 
   validation {
-    condition     = var.location == "centralindia"
-    error_message = "All resources must be deployed to the centralindia region."
+    condition     = contains(["centralindia", "eastus", "eastus2", "swedencentral"], var.location)
+    error_message = "All resources must be deployed to centralindia, eastus, eastus2, or swedencentral."
   }
 }
 
@@ -57,13 +57,13 @@ variable "vnet_address_space" {
 variable "appgw_subnet_cidr" {
   description = "CIDR for the Application Gateway subnet."
   type        = string
-  default     = "10.0.1.0/24"
+  default     = "10.0.4.0/24"
 }
 
 variable "aks_subnet_cidr" {
   description = "CIDR for the AKS node pool subnet (/22 for Azure CNI)."
   type        = string
-  default     = "10.0.2.0/22"
+  default     = "10.0.0.0/22"
 }
 
 variable "func_subnet_cidr" {

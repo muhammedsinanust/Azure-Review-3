@@ -31,6 +31,7 @@ resource "azurerm_cognitive_account" "main" {
   kind                  = "AIServices"
   sku_name              = "S0"
   tags                  = var.tags
+  custom_subdomain_name = "${var.prefix}-ai-services"
 
   # --- No public network access: private endpoint only ---
   public_network_access_enabled = false
