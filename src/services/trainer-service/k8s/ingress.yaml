@@ -12,7 +12,7 @@ metadata:
     appgw.ingress.kubernetes.io/health-probe-path: /health
 spec:
   rules:
-    - host: api.training.contoso.com
+    - host: api.training.sneakertail.online
       http:
         paths:
           - path: /api/trainer

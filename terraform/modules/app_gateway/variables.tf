@@ -81,5 +81,5 @@ variable "capacity" {
 variable "domain_name" {
   description = "Domain name used in Application Gateway listener host names."
   type        = string
-  default     = "training.contoso.com"
+  default     = "training.sneakertail.online"
 }

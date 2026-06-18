@@ -229,6 +229,11 @@ jobs:
             ${{ env.ACR_LOGIN_SERVER }}/${{ matrix.service }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            NEXT_PUBLIC_AZURE_AD_CLIENT_ID=${{ secrets.NEXT_PUBLIC_AZURE_AD_CLIENT_ID || secrets.AZURE_CLIENT_ID }}
+            NEXT_PUBLIC_AZURE_AD_TENANT_ID=${{ secrets.NEXT_PUBLIC_AZURE_AD_TENANT_ID || secrets.AZURE_TENANT_ID }}
+            NEXT_PUBLIC_REDIRECT_URI=https://training.sneakertail.online
+            NEXT_PUBLIC_API_URL=https://api.training.sneakertail.online
 
   # ──────────────────────────────────────────────────────────────
   # Job 4: Lint & validate on PRs (fast feedback)
@@ -291,7 +296,7 @@ jobs:
     name: "Deploy Azure Function"
     needs: detect-changes
     if: github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.detect-changes.outputs.functions == 'true'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4

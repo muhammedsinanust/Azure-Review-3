@@ -51,4 +51,4 @@ export const apiScopes = {
 };
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.training.contoso.com";
+  process.env.NEXT_PUBLIC_API_URL || "https://api.training.sneakertail.online";

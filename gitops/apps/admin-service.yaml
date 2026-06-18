@@ -20,7 +20,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/ctmp3.git
+    repoURL: https://github.com/sinans-azure/CTMP3.git
     targetRevision: HEAD
     path: src/services/admin-service/k8s/
   destination:
