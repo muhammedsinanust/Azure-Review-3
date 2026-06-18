@@ -5,7 +5,7 @@ on:
 
 permissions:
   id-token: write # Required for Azure OIDC login
-  contents: read  # Required to check out repository manifests
+  contents: read # Required to check out repository manifests
 
 jobs:
   bootstrap-gitops:
@@ -33,7 +33,7 @@ jobs:
           kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
 
           echo "Applying community ArgoCD stable manifests..."
-          kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+          kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
           echo "Waiting for ArgoCD server components to reach ready state..."
           kubectl rollout status deployment/argocd-server -n argocd --timeout=300s
