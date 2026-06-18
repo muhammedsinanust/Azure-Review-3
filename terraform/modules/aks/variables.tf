@@ -39,13 +39,13 @@ variable "kubernetes_version" {
 variable "default_node_pool_vm_size" {
   description = "VM size for the default (system) node pool."
   type        = string
-  default     = "Standard_D2s_v5"
+  default     = "Standard_D2als_v6"
 }
 
 variable "user_node_pool_vm_size" {
   description = "VM size for the user (workload) node pool."
   type        = string
-  default     = "Standard_D2s_v5"
+  default     = "Standard_D2als_v6"
 }
 
 variable "system_pool_min_count" {

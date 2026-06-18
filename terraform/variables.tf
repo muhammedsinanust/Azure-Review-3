@@ -101,13 +101,13 @@ variable "domain_name" {
 variable "system_node_vm_size" {
   description = "VM size for the AKS system (default) node pool."
   type        = string
-  default     = "Standard_D2s_v5"
+  default     = "Standard_D2als_v6"
 }
 
 variable "user_node_vm_size" {
   description = "VM size for the AKS user (workload) node pool."
   type        = string
-  default     = "Standard_D2s_v5"
+  default     = "Standard_D2als_v6"
 }
 
 # -----------------------------------------------------------------------------
