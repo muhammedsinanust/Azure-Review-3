@@ -51,7 +51,7 @@ variable "user_node_pool_vm_size" {
 variable "system_pool_min_count" {
   description = "Minimum node count for the system pool autoscaler."
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "system_pool_max_count" {
@@ -63,13 +63,13 @@ variable "system_pool_max_count" {
 variable "system_pool_node_count" {
   description = "Initial node count for the system pool."
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "user_pool_min_count" {
   description = "Minimum node count for the user pool autoscaler."
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "user_pool_max_count" {
@@ -81,7 +81,7 @@ variable "user_pool_max_count" {
 variable "user_pool_node_count" {
   description = "Initial node count for the user pool."
   type        = number
-  default     = 2
+  default     = 1
 }
 
 # -----------------------------------------------------------------------------
