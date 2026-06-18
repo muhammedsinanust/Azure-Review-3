@@ -215,6 +215,7 @@ module "function_app" {
   vnet_id                  = module.networking.vnet_id
   blob_private_dns_zone_id = module.networking.blob_private_dns_zone_id
   queue_private_dns_zone_id = module.networking.queue_private_dns_zone_id
+  web_private_dns_zone_id  = module.networking.web_private_dns_zone_id
   key_vault_id             = module.key_vault.key_vault_id
 }
 

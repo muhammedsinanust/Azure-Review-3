@@ -348,6 +348,20 @@ resource "azurerm_network_security_rule" "pe_allow_https_from_func" {
   network_security_group_name = azurerm_network_security_group.pe.name
 }
 
+resource "azurerm_network_security_rule" "pe_allow_https_from_jumpbox" {
+  name                        = "Allow-HTTPS-From-Jumpbox"
+  priority                    = 120
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = var.jumpbox_subnet_cidr
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.pe.name
+}
+
 resource "azurerm_network_security_rule" "pe_deny_all_inbound" {
   name                        = "Deny-All-Inbound"
   priority                    = 4096
@@ -443,6 +457,12 @@ resource "azurerm_private_dns_zone" "openai" {
   tags                = var.tags
 }
 
+resource "azurerm_private_dns_zone" "web" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = var.resource_group_name
+  tags                = var.tags
+}
+
 # =============================================================================
 # Private DNS Zone ↔ VNet Links
 # =============================================================================
@@ -499,6 +519,15 @@ resource "azurerm_private_dns_zone_virtual_network_link" "openai" {
   name                  = "${var.prefix}-openai-dns-link"
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.openai.name
+  virtual_network_id    = azurerm_virtual_network.main.id
+  registration_enabled  = false
+  tags                  = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "web" {
+  name                  = "${var.prefix}-web-dns-link"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.web.name
   virtual_network_id    = azurerm_virtual_network.main.id
   registration_enabled  = false
   tags                  = var.tags

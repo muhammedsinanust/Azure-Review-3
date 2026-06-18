@@ -60,6 +60,11 @@ variable "queue_private_dns_zone_id" {
   type        = string
 }
 
+variable "web_private_dns_zone_id" {
+  description = "Resource ID of the privatelink.azurewebsites.net DNS zone."
+  type        = string
+}
+
 # -----------------------------------------------------------------------------
 # Service Plan
 # -----------------------------------------------------------------------------

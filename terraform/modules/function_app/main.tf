@@ -229,3 +229,31 @@ resource "azurerm_role_assignment" "func_storage_contributor" {
   role_definition_name = "Storage Account Contributor"
   principal_id         = azurerm_user_assigned_identity.func.principal_id
 }
+
+# =============================================================================
+# Function App Private Endpoint — Sites (Inbound Deployment)
+# =============================================================================
+# Allows the self-hosted runner (Jumpbox) and other VNet resources to reach the
+# Function App's main site and Kudu SCM deployment endpoint privately.
+# =============================================================================
+
+resource "azurerm_private_endpoint" "func_sites" {
+  name                = "${var.prefix}-func-sites-pe"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.pe_subnet_id
+  tags                = var.tags
+
+  private_service_connection {
+    name                           = "${var.prefix}-func-sites-psc"
+    private_connection_resource_id = azurerm_linux_function_app.main.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "web-dns-zone-group"
+    private_dns_zone_ids = [var.web_private_dns_zone_id]
+  }
+}
+

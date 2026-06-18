@@ -106,3 +106,8 @@ output "openai_private_dns_zone_id" {
   description = "Resource ID of the privatelink.openai.azure.com zone."
   value       = azurerm_private_dns_zone.openai.id
 }
+
+output "web_private_dns_zone_id" {
+  description = "Resource ID of the privatelink.azurewebsites.net zone."
+  value       = azurerm_private_dns_zone.web.id
+}
