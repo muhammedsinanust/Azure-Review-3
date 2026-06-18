@@ -1,0 +1,47 @@
+name: "Deploy ArgoCD & Bootstrap GitOps"
+
+on:
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
+
+permissions:
+  id-token: write # Required for Azure OIDC login
+  contents: read  # Required to check out repository manifests
+
+jobs:
+  bootstrap-gitops:
+    name: "Install ArgoCD & App-of-Apps"
+    runs-on: self-hosted # Run inside the VNet via the self-hosted runner to access private AKS
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get AKS Credentials
+        run: |
+          echo "Connecting to private AKS cluster..."
+          az aks get-credentials --resource-group rg-ctmp3 --name ctmp3-aks --overwrite-existing
+
+      - name: Install ArgoCD
+        run: |
+          echo "Creating namespace 'argocd' if it does not exist..."
+          kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+
+          echo "Applying community ArgoCD stable manifests..."
+          kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+          echo "Waiting for ArgoCD server components to reach ready state..."
+          kubectl rollout status deployment/argocd-server -n argocd --timeout=300s
+
+      - name: Deploy App-of-Apps Bootstrap Manifest
+        run: |
+          echo "Applying ArgoCD App-of-Apps root bootstrap configuration..."
+          kubectl apply -f gitops/bootstrap/argocd-app-of-apps.yaml
+
+          echo "Verifying root application creation..."
+          kubectl get application -n argocd
