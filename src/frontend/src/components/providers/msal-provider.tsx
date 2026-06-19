@@ -9,7 +9,11 @@ import {
 import { MsalProvider as MsalReactProvider } from "@azure/msal-react";
 import { msalConfig } from "@/lib/msal-config";
 
-const msalInstance = new PublicClientApplication(msalConfig);
+let msalInstance: PublicClientApplication | null = null;
+
+if (typeof window !== "undefined") {
+  msalInstance = new PublicClientApplication(msalConfig);
+}
 
 interface MsalProviderProps {
   children: ReactNode;
@@ -20,6 +24,7 @@ export function MsalProvider({ children }: MsalProviderProps) {
 
   useEffect(() => {
     const initializeMsal = async () => {
+      if (!msalInstance) return;
       await msalInstance.initialize();
 
       const accounts = msalInstance.getAllAccounts();
@@ -43,7 +48,7 @@ export function MsalProvider({ children }: MsalProviderProps) {
     initializeMsal();
   }, []);
 
-  if (!isInitialized) {
+  if (!isInitialized || !msalInstance) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
