@@ -22,7 +22,7 @@ spec:
   source:
     repoURL: https://github.com/sinans-azure/CTMP3.git
     targetRevision: HEAD
-    path: src/services/billing-service/k8s/
+    path: gitops/manifests/billing-service/
   destination:
     server: https://kubernetes.default.svc
     namespace: training-portal

@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: admin-service
+  name: analytics-service
   namespace: training-portal
   labels:
-    app.kubernetes.io/name: admin-service
+    app.kubernetes.io/name: analytics-service
     app.kubernetes.io/component: api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: admin-service
+      app.kubernetes.io/name: analytics-service
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: admin-service
+        app.kubernetes.io/name: analytics-service
         app.kubernetes.io/component: api
     spec:
       containers:
-        - name: admin-service
-          image: ctmp3acr.azurecr.io/admin-service:latest
+        - name: analytics-service
+          image: ctmp3acr.azurecr.io/analytics-service:latest
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -32,10 +32,10 @@ spec:
               memory: 512Mi
           envFrom:
             - configMapRef:
-                name: admin-service-config
+                name: analytics-service-config
                 optional: true
             - secretRef:
-                name: admin-service-secrets
+                name: analytics-service-secrets
                 optional: true
           livenessProbe:
             httpGet:

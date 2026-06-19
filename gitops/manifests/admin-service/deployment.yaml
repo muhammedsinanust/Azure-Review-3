@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: billing-service
+  name: admin-service
   namespace: training-portal
   labels:
-    app.kubernetes.io/name: billing-service
+    app.kubernetes.io/name: admin-service
     app.kubernetes.io/component: api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: billing-service
+      app.kubernetes.io/name: admin-service
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: billing-service
+        app.kubernetes.io/name: admin-service
         app.kubernetes.io/component: api
     spec:
       containers:
-        - name: billing-service
-          image: ctmp3acr.azurecr.io/billing-service:latest
+        - name: admin-service
+          image: ctmp3acr.azurecr.io/admin-service:latest
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -32,10 +32,10 @@ spec:
               memory: 512Mi
           envFrom:
             - configMapRef:
-                name: billing-service-config
+                name: admin-service-config
                 optional: true
             - secretRef:
-                name: billing-service-secrets
+                name: admin-service-secrets
                 optional: true
           livenessProbe:
             httpGet:
