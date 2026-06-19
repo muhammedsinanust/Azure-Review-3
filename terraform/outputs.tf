@@ -115,3 +115,23 @@ output "jumpbox_public_ip" {
   description = "Public IP address of the Jumpbox VM."
   value       = module.jumpbox.jumpbox_public_ip
 }
+
+# -----------------------------------------------------------------------------
+# Remote State Metadata for cert module
+# -----------------------------------------------------------------------------
+
+output "resource_group_name" {
+  description = "The name of the resource group containing all resources."
+  value       = var.resource_group_name
+}
+
+output "domain_name" {
+  description = "The public domain name of the portal."
+  value       = var.domain_name
+}
+
+output "key_vault_id" {
+  description = "The Resource ID of the Key Vault."
+  value       = module.key_vault.key_vault_id
+}
+

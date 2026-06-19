@@ -1,0 +1,40 @@
+name: "Renew SSL Certificate"
+
+on:
+  schedule:
+    - cron: "0 0 1 */2 *" # Runs at 00:00 on day 1 of every second month (~60 days)
+  workflow_dispatch: # Allows manual trigger to request/renew certificate
+
+permissions:
+  id-token: write # Required for OIDC Azure login
+  contents: read # Required to checkout repo
+
+jobs:
+  renew-cert:
+    name: "Renew Let's Encrypt SSL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.0"
+
+      - name: Terraform Init
+        run: |
+          cd terraform-cert
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd terraform-cert
+          terraform apply -auto-approve

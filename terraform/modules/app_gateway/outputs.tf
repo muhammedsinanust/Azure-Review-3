@@ -31,3 +31,9 @@ output "waf_policy_id" {
   description = "Resource ID of the WAF policy."
   value       = azurerm_web_application_firewall_policy.main.id
 }
+
+output "identity_principal_id" {
+  description = "Principal ID of the Application Gateway User-Assigned Managed Identity."
+  value       = azurerm_user_assigned_identity.appgw.principal_id
+}
+

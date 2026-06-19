@@ -83,3 +83,9 @@ variable "domain_name" {
   type        = string
   default     = "training.sneakertail.online"
 }
+
+variable "key_vault_secret_id" {
+  description = "The Secret ID of the SSL certificate in Key Vault."
+  type        = string
+}
+

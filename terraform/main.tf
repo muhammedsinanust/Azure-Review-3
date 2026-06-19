@@ -132,7 +132,15 @@ module "app_gateway" {
   waf_mode             = "Prevention"
   owasp_ruleset_version = "3.2"
   domain_name          = var.domain_name
+  key_vault_secret_id  = "${module.key_vault.key_vault_uri}secrets/sneakertail-cert"
 }
+
+resource "azurerm_role_assignment" "appgw_kv_secrets_user" {
+  scope                = module.key_vault.key_vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.app_gateway.identity_principal_id
+}
+
 
 # =============================================================================
 # Module: Key Vault

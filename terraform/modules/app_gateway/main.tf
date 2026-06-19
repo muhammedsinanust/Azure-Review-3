@@ -78,12 +78,25 @@ locals {
   request_routing_rule     = "${var.prefix}-appgw-rule-placeholder"
 }
 
+resource "azurerm_user_assigned_identity" "appgw" {
+  name                = "${var.prefix}-appgw-identity"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  tags                = var.tags
+}
+
 resource "azurerm_application_gateway" "main" {
   name                = "${var.prefix}-appgw"
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = var.tags
   firewall_policy_id  = azurerm_web_application_firewall_policy.main.id
+
+  # --- Managed Identity for Key Vault Integration ---
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.appgw.id]
+  }
 
   # --- SKU: WAF_v2 with fixed instance count (autoscale can be added) ---
   sku {
@@ -123,6 +136,12 @@ resource "azurerm_application_gateway" "main" {
   backend_address_pool {
     name = local.backend_pool_name
   }
+
+  # --- SSL Certificate from Key Vault ---
+  #ssl_certificate {
+  #  name                = "sneakertail-cert"
+  #  key_vault_secret_id = var.key_vault_secret_id
+  #}
 
   # --- Placeholder backend HTTP settings (AGIC will replace) ---
   backend_http_settings {
