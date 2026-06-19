@@ -11,6 +11,7 @@ metadata:
     appgw.ingress.kubernetes.io/backend-path-prefix: /
     appgw.ingress.kubernetes.io/health-probe-path: /health
 spec:
+  ingressClassName: azure-application-gateway
   rules:
     - host: api.training.sneakertail.online
       http:

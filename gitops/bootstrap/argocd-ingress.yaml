@@ -7,9 +7,11 @@ metadata:
     kubernetes.io/ingress.class: azure/application-gateway
     appgw.ingress.kubernetes.io/backend-path-prefix: /
     # Force SSL redirect on the Application Gateway
-    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    appgw.ingress.kubernetes.io/ssl-redirect: "false"
+    # appgw.ingress.kubernetes.io/ssl-redirect: "true"
     # Inform AGIC that the ArgoCD server expects HTTPS traffic backend-side
     appgw.ingress.kubernetes.io/backend-protocol: "http"
+    # appgw.ingress.kubernetes.io/backend-protocol: "https"
 spec:
   rules:
     - host: argocd.training.sneakertail.online
@@ -21,4 +23,5 @@ spec:
               service:
                 name: argocd-server
                 port:
-                  number: 443
+                  number: 80
+                  # number: 443
