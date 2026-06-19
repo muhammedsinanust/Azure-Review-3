@@ -252,34 +252,6 @@ resource "azurerm_network_security_rule" "aks_allow_backend_ports_from_appgw" {
   network_security_group_name = azurerm_network_security_group.aks.name
 }
 
-resource "azurerm_network_security_rule" "aks_allow_azure_lb" {
-  name                        = "Allow-AzureLoadBalancer"
-  priority                    = 130
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "AzureLoadBalancer"
-  destination_address_prefix  = "*"
-  resource_group_name         = var.resource_group_name
-  network_security_group_name = azurerm_network_security_group.aks.name
-}
-
-resource "azurerm_network_security_rule" "aks_deny_all_inbound" {
-  name                        = "Deny-All-Inbound"
-  priority                    = 4096
-  direction                   = "Inbound"
-  access                      = "Deny"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = var.resource_group_name
-  network_security_group_name = azurerm_network_security_group.aks.name
-}
-
 resource "azurerm_network_security_rule" "aks_allow_outbound_github" {
   name                        = "Allow-Outbound-GitHub"
   priority                    = 100
