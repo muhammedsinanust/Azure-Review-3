@@ -138,10 +138,10 @@ resource "azurerm_application_gateway" "main" {
   }
 
   # --- SSL Certificate from Key Vault ---
-  #ssl_certificate {
-  #  name                = "sneakertail-cert"
-  #  key_vault_secret_id = var.key_vault_secret_id
-  #}
+  ssl_certificate {
+    name                = "sneakertail-cert"
+    key_vault_secret_id = var.key_vault_secret_id
+  }
 
   # --- Placeholder backend HTTP settings (AGIC will replace) ---
   backend_http_settings {
