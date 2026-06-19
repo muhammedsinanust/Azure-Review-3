@@ -28,8 +28,8 @@ resource "azurerm_key_vault" "main" {
   purge_protection_enabled = true
   soft_delete_retention_days = 90
 
-  # --- Network isolation: no public access, private endpoint only ---
-  public_network_access_enabled = false
+  # --- Network isolation: default deny, allow IP whitelisting ---
+  public_network_access_enabled = true
 
   # Network ACLs default deny for defense-in-depth alongside the PE.
   network_acls {

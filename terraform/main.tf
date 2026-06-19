@@ -293,3 +293,6 @@ resource "azurerm_dns_a_record" "api" {
 
   depends_on = [module.networking]
 }
+
+
+

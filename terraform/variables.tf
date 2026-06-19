@@ -125,3 +125,6 @@ variable "acr_name" {
   type        = string
   default     = "ctmp3acr"
 }
+
+
+
