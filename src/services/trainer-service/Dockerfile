@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 # ---------- Runtime stage ----------
 FROM python:3.11-slim AS runtime
 
-RUN groupadd -r appuser && useradd -r -g appuser -s /sbin/nologin appuser
+RUN groupadd -r -g 10001 appuser && useradd -r -u 10001 -g appuser -s /sbin/nologin appuser
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY ./app ./app
 
 RUN chown -R appuser:appuser /app
 
-USER appuser
+USER 10001
 
 EXPOSE 8000
 
