@@ -174,12 +174,12 @@ module "aks" {
   default_node_pool_vm_size = var.system_node_vm_size
   user_node_pool_vm_size    = var.user_node_vm_size
 
-  system_pool_node_count = 1
-  system_pool_min_count  = 1
+  system_pool_node_count = 2
+  system_pool_min_count  = 2
   system_pool_max_count  = 4
 
-  user_pool_node_count = 1
-  user_pool_min_count  = 1
+  user_pool_node_count = 2
+  user_pool_min_count  = 2
   user_pool_max_count  = 6
 
   # Networking

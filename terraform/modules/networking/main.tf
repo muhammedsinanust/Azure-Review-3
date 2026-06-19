@@ -280,6 +280,20 @@ resource "azurerm_network_security_rule" "aks_deny_all_inbound" {
   network_security_group_name = azurerm_network_security_group.aks.name
 }
 
+resource "azurerm_network_security_rule" "aks_allow_outbound_github" {
+  name                        = "Allow-Outbound-GitHub"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_ranges     = ["22", "443"]
+  source_address_prefix       = var.aks_subnet_cidr
+  destination_address_prefix  = "Internet"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.aks.name
+}
+
 # =============================================================================
 # NSG Rules — Function App
 # =============================================================================
